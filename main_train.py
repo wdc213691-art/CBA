@@ -1,5 +1,9 @@
+# python main_train.py --project_name JointOpt_Experiment --defer_trigger True --poison_rate 0.2
+
+
 from argparse import ArgumentParser
 import torch
+import os
 from models.trainer import *
 from utils_ import str2bool
 print(torch.cuda.is_available())
@@ -32,7 +36,7 @@ if __name__ == '__main__':
     # ------------
     parser = ArgumentParser()
     parser.add_argument('--gpu_ids', type=str, default='0', help='gpu ids: e.g. 0  0,1,2, 0,2. use -1 for CPU')
-    parser.add_argument('--project_name', default='LEVIR-CD_SEIFNet_ce_Adamw_0.0001_200', type=str)
+    parser.add_argument('--project_name', default='LEVIR-0.2', type=str)
     #SYSU_res18_coMDE2_AFF_Bcedice_l0_Adamw_0.0001_200
     #LEVIR_transformer_CoDEM_AFF_ce_Adamw_0.0001_200_2
     parser.add_argument('--checkpoint_root', default='checkpoints', type=str)
@@ -42,11 +46,17 @@ if __name__ == '__main__':
     parser.add_argument('--dataset', default='CDDataset', type=str)
     parser.add_argument('--data_name', default='LEVIR', type=str,help='ChangeDetection|LEVIR|DSFIN|SYSU-CD|LEVIR+|BBCD|WHU-CD')
 
-    parser.add_argument('--batch_size', default=2, type=int)
+    parser.add_argument('--batch_size', default=16, type=int)
     parser.add_argument('--split', default="train", type=str)
     parser.add_argument('--split_val', default="val", type=str)
 
     parser.add_argument('--img_size', default=256, type=int)
+
+    # poisoning
+    parser.add_argument('--poison_rate', default=0.2, type=float, help='poison rate for training data')
+    parser.add_argument('--apply_to', default='both', type=str, choices=['A', 'B', 'both'], help='apply trigger to which image(s)')
+    parser.add_argument('--defer_trigger', default=False, type=str2bool, help='Optimize trigger during training')
+    parser.add_argument('--trigger_reg_lambda', default=0.0, type=float, help='Regularization weight for trigger to stay close to original image (0=no regularization)')
 
     # model
     parser.add_argument('--n_class', default=2, type=int)

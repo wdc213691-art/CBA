@@ -105,8 +105,9 @@ class CoordAtt(nn.Module):
     def forward(self, x):
 
         n, c, h, w = x.size()
-        x_h = self.pool_h(x)
-        x_w = self.pool_w(x).permute(0, 1, 3, 2)
+        # 使用平均池化替代AdaptiveAvgPool2d以支持ONNX导出
+        x_h = torch.mean(x, dim=3, keepdim=True)  # [N, C, H, 1]
+        x_w = torch.mean(x, dim=2, keepdim=True).permute(0, 1, 3, 2)  # [N, C, W, 1] -> [N, C, 1, W]
 
         y = torch.cat([x_h, x_w], dim=2)
         y = self.conv1(y)

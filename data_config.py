@@ -6,7 +6,7 @@ class DataConfig:
     def get_data_config(self, data_name):
         self.data_name = data_name
         if data_name == 'LEVIR':
-            self.root_dir = 'E:/CDDataset/LEVIR'
+            self.root_dir = '/home/cver2080/4TDISK/hjl/A_rs_data/LEVIR-CD256'
         elif data_name == 'DSIFN':
             self.label_transform = "norm"
             self.root_dir = 'E:/CDDataset/DSIFN_256'
@@ -24,7 +24,7 @@ class DataConfig:
             self.root_dir = 'E:/CDDataset/GZ'
         elif data_name == 'WHU-CD':
             self.label_transform = "norm"
-            self.root_dir = 'E:/CDDataset/WHU-CUT'
+            self.root_dir = '/home/cver2080/4TDISK/hjl/A_rs_data/WHU-CD256'
         elif data_name == 'test':
             self.label_transform = "norm"
             self.root_dir = 'E:/CDDataset/att_test_whu'

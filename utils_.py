@@ -41,9 +41,16 @@ def get_loaders(args):
     if hasattr(args, 'split_val'):
         split_val = args.split_val
     if args.dataset == 'CDDataset':
+        poison_rate = getattr(args, 'poison_rate', 0.0)
+        apply_to = getattr(args, 'apply_to', 'both')
+        defer_trigger = getattr(args, 'defer_trigger', False)
+        
         training_set = CDDataset(root_dir=root_dir, split=split,
                                  img_size=args.img_size,is_train=True,
-                                 label_transform=label_transform)
+                                 label_transform=label_transform,
+                                 poison_rate=poison_rate,
+                                 apply_to=apply_to,
+                                 defer_trigger=defer_trigger)
         val_set = CDDataset(root_dir=root_dir, split=split_val,
                                  img_size=args.img_size,is_train=False,
                                  label_transform=label_transform)
